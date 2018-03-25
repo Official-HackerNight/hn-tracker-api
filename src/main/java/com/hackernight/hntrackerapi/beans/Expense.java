@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "EXPENSE")
@@ -21,10 +24,27 @@ public class Expense {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EXPENSE_SEQ")
 	@Column(name = "EXPENSE_ID")
 	private int expenseId;
+
+	@NotNull
+	// @Size(min = 1, max = 1_000_000) for integers...
+	@DecimalMin(value = "0.01")
+	@DecimalMax(value = "1000000")
+	@Column(nullable = false)
+	private Double amount;
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
 	private String description;
 	private Date date;
 	@Column(name = "USER_ID")
-	private int userId;
+	private String userId;
+
 	@Column(name = "IS_ACTIVE")
 	private boolean isActive;
 
@@ -35,6 +55,33 @@ public class Expense {
 	public Expense() {
 	}
 
+	public Expense(int expenseId, Double amount, String description, Date date, String userId, boolean isActive,
+			int occurs, ExpenseType expenseType) {
+		super();
+		this.expenseId = expenseId;
+		this.amount = amount;
+		this.description = description;
+		this.date = date;
+		this.userId = userId;
+		this.isActive = isActive;
+		this.occurs = occurs;
+		this.expenseType = expenseType;
+	}
+
+	public Expense(int expenseId, Double amount, String description, Date date, String userId, boolean isActive,
+			int occurs, String expenseType) {
+		super();
+		this.expenseId = expenseId;
+		this.amount = amount;
+		this.description = description;
+		this.date = date;
+		this.userId = userId;
+		this.isActive = isActive;
+		this.occurs = occurs;
+		this.expenseType = new ExpenseType();
+		this.expenseType.setType(expenseType);
+	}
+	
 	public int getExpenseId() {
 		return expenseId;
 	}
@@ -59,11 +106,11 @@ public class Expense {
 		this.date = date;
 	}
 
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -93,8 +140,9 @@ public class Expense {
 
 	@Override
 	public String toString() {
-		return "Expense [expenseId=" + expenseId + ", description=" + description + ", date=" + date + ", userId="
-				+ userId + ", isActive=" + isActive + ", occurs=" + occurs + ", expenseType=" + expenseType + "]";
+		return "Expense [expenseId=" + expenseId + ", amount=" + amount + ", description=" + description + ", date="
+				+ date + ", userId=" + userId + ", isActive=" + isActive + ", occurs=" + occurs + ", expenseType="
+				+ expenseType + "]";
 	}
 
 }

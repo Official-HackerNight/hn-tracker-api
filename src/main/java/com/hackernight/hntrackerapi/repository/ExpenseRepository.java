@@ -10,5 +10,5 @@ import com.hackernight.hntrackerapi.beans.Expense;
 @Repository
 public interface ExpenseRepository extends CrudRepository<Expense, Integer>{
 
-	List<Expense> findByUserId(int id);
+	List<Expense> findByUserId(String id);
 }

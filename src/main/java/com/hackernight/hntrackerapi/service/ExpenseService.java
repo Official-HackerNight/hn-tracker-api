@@ -16,9 +16,13 @@ public class ExpenseService {
 	@Autowired
 	private ExpenseRepository eRepo;
 	
-	public List<Expense> findAllExpensesByUserId(int id){
-		System.out.println("Service getting all expense for " + id);
+	public List<Expense> findAllExpensesByUserId(String id){
+		System.out.println("expense service -findAll: " + id);
 		return eRepo.findByUserId(id);
 	}
 	
+	public void persistExpense(Expense expense) {
+		System.out.println("expense service -create: " + expense);
+		eRepo.save(expense);
+	}
 }
